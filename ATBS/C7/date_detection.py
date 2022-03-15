@@ -1,4 +1,4 @@
-import re
+import re, sys
 # DD/MM/YYYY
 # 1-31/01-12/1000-2999
 # day and month will have leading zero if single digit
@@ -15,7 +15,7 @@ date_regex = re.compile(r'''
 (\/)              #separator  
 ([1-2][0-9]{3})   #year
 ''', re.VERBOSE)
-date_mo = date_regex.search('31/04/2220')
+date_mo = date_regex.search('29/02/2221')
 
 day, month, year = date_mo.group(1), date_mo.group(3), date_mo.group(5)
 
@@ -35,11 +35,23 @@ months = {
 
 def get_key(month):
   for k, v in valid_dates.items():
-    print(f'{k} : {v}')
     if month in v:
       return k
 
-if int(day) <= get_key(months[month]):
-  print('date is valid')
+def is_date_valid():
+  if int(day) <= get_key(months[month]):
+    print('date is valid')
+  else:
+    print('date is invalid')
+
+
+# check if leap year
+if months[month] == 'Feb' and int(day) == 29:
+    if int(year) % 4 == 0 and int(year) % 100 != 0:
+      print('date is valid')
+    else:
+      is_date_valid()
 else:
-  print('date is invalid')
+  is_date_valid()
+
+  
